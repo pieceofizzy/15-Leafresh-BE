@@ -27,7 +27,11 @@ public enum VerificationErrorCode implements BaseErrorCode {
     RESULT_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류로 인증 결과 저장 실패. 잠시 후 다시 시도해주세요."),
     CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 챌린지입니다."),
     CHALLENGE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 챌린지에 접근할 수 없습니다."),
-    RESULT_QUERY_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류로 인해 인증 결과를 조회하지 못했습니다.");
+    RESULT_QUERY_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류로 인해 인증 결과를 조회하지 못했습니다."),
+    AI_RESPONSE_FAILED(HttpStatus.BAD_REQUEST, "AI 응답 결과가 검열 실패로 판단되었습니다."),
+    AI_RESPONSE_PARSING_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AI 응답 파싱에 실패했습니다."),
+    AI_REQUEST_TIMEOUT(HttpStatus.GATEWAY_TIMEOUT, "AI 서버 응답이 시간 초과되었습니다."),
+    AI_CONNECTION_FAILED(HttpStatus.BAD_GATEWAY, "AI 서버에 연결할 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;
