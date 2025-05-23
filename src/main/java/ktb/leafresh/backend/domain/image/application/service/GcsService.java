@@ -41,7 +41,7 @@ public class GcsService {
 
         log.debug("BlobInfo 생성 완료 - bucket={}, fileName={}", bucketName, fileName);
 
-        URL uploadUrl = storage.signUrl(blobInfo, 15, TimeUnit.MINUTES,
+        URL uploadUrl = storage.signUrl(blobInfo, 3, TimeUnit.MINUTES,
                 Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
                 Storage.SignUrlOption.withV4Signature(),
                 Storage.SignUrlOption.withContentType());
