@@ -5,6 +5,8 @@ import ktb.leafresh.backend.domain.member.domain.entity.Member;
 import ktb.leafresh.backend.global.common.entity.BaseEntity;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "feedbacks", indexes = @Index(name = "idx_feedback_deleted", columnList = "deleted_at"))
 @Getter
@@ -23,4 +25,11 @@ public class Feedback extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public static Feedback of(Member member, String content) {
+        return Feedback.builder()
+                .member(member)
+                .content(content)
+                .build();
+    }
 }
