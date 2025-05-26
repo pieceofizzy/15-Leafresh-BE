@@ -62,6 +62,10 @@ public class SecurityConfig {
                         // images
                         .requestMatchers("/s3/images/presigned-url").permitAll()
 
+                        // 메인 페이지
+                        .requestMatchers("/api/leaves/count").permitAll()
+                        .requestMatchers("/api/challenges/verifications/count").permitAll()
+
                         // 테스트 컨트롤러용 허용 경로 추가
                         .requestMatchers("/spring/**").permitAll()
 
