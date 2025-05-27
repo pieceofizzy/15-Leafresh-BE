@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,6 +30,28 @@ public class VerificationResultProcessor {
     private final PersonalChallengeVerificationRepository personalChallengeVerificationRepository;
     private final NotificationCreateService notificationCreateService;
     private final RewardGrantService rewardGrantService;
+
+    public ChallengeStatus getCurrentStatus(Long memberId, Long challengeId, ChallengeType type) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay = now.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+
+        return switch (type) {
+            case GROUP -> groupChallengeVerificationRepository
+                    .findTopByParticipantRecord_Member_IdAndParticipantRecord_GroupChallenge_IdAndCreatedAtBetween(
+                            memberId, challengeId, startOfDay, endOfDay
+                    )
+                    .map(GroupChallengeVerification::getStatus)
+                    .orElse(ChallengeStatus.NOT_SUBMITTED);
+
+            case PERSONAL -> personalChallengeVerificationRepository
+                    .findTopByMemberIdAndPersonalChallengeIdAndCreatedAtBetween(
+                            memberId, challengeId, startOfDay, endOfDay
+                    )
+                    .map(PersonalChallengeVerification::getStatus)
+                    .orElse(ChallengeStatus.NOT_SUBMITTED);
+        };
+    }
 
     public void process(Long verificationId, VerificationResultRequestDto dto) {
         if (dto.type() == ChallengeType.GROUP) {
