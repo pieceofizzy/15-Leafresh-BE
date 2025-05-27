@@ -1,6 +1,8 @@
 package ktb.leafresh.backend.domain.feedback.presentation.controller;
 
 import ktb.leafresh.backend.domain.feedback.application.service.FeedbackStreamService;
+import ktb.leafresh.backend.domain.feedback.presentation.dto.response.FeedbackResponseDto;
+import ktb.leafresh.backend.global.response.ApiResponse;
 import ktb.leafresh.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +25,9 @@ public class FeedbackStreamController {
     private final FeedbackStreamService feedbackStreamService;
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<String>> streamFeedback(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public Flux<ServerSentEvent<ApiResponse<FeedbackResponseDto>>> streamFeedback(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long memberId = userDetails.getMemberId();
         log.info("[AI_FEEDBACK] SSE 연결 요청 - memberId={}", memberId);
-        return feedbackStreamService.getFeedbackStream(memberId); // 이걸로 변경
+        return feedbackStreamService.getFeedbackStream(memberId);
     }
 }
