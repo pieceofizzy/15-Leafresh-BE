@@ -1,6 +1,8 @@
 package ktb.leafresh.backend.domain.feedback.infrastructure.client;
 
+import ktb.leafresh.backend.domain.feedback.presentation.dto.response.FeedbackResponseDto;
 import ktb.leafresh.backend.domain.feedback.support.sink.FeedbackSinkManager;
+import ktb.leafresh.backend.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -16,12 +18,16 @@ public class FakeFeedbackSseClient implements FeedbackSseClient {
 
     @Override
     public void connect() {
-        log.info("[AI_FEEDBACK] 테스트용 SSE 응답 전송");
+        log.info("[AI_FEEDBACK] 테스트용 SSE 응답 전송 시작");
 
-        // 요청된 memberId를 받아와야 제대로 작동합니다.
-        Long testMemberId = 2L; // ← 지금 테스트 중인 memberId로 맞추기
-        String fakeMessage = "[테스트 응답] 지난주에 텀블러 사용과 플로깅을 실천하셨습니다. 환경을 위한 실천, 응원합니다.";
+        Long testMemberId = 2L; // 현재 테스트 대상 사용자 ID
+        String fakeContent = "지난주에 텀블러 사용과 플로깅을 실천하셨습니다. 환경을 위한 실천, 응원합니다 🌿";
 
-        sinkManager.push(testMemberId, fakeMessage);
+        FeedbackResponseDto responseDto = FeedbackResponseDto.of(testMemberId, fakeContent);
+        ApiResponse<FeedbackResponseDto> apiResponse = ApiResponse.success("테스트 피드백 도착", responseDto);
+
+        sinkManager.push(testMemberId, apiResponse);
+
+        log.info("[AI_FEEDBACK] 테스트용 피드백 전송 완료 - memberId={}, content={}", testMemberId, fakeContent);
     }
 }
