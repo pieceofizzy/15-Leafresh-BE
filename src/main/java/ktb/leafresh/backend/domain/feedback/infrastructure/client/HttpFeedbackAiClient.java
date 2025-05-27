@@ -2,7 +2,7 @@ package ktb.leafresh.backend.domain.feedback.infrastructure.client;
 
 import ktb.leafresh.backend.domain.feedback.domain.model.WeeklyFeedbackPayload;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,18 +12,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class HttpFeedbackAiClient implements FeedbackAiClient {
 
-    private final WebClient webClient;
+    private final WebClient aiServerWebClient;
 
-    public HttpFeedbackAiClient(@Value("${ai-server.base-url}") String baseUrl) {
-        this.webClient = WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+    public HttpFeedbackAiClient(
+            @Qualifier("aiServerWebClient") WebClient aiServerWebClient
+    ) {
+        this.aiServerWebClient = aiServerWebClient;
     }
 
     @Override
     public String requestWeeklyFeedback(WeeklyFeedbackPayload payload) {
         try {
-            return webClient.post()
+            return aiServerWebClient.post()
                     .uri("/feedback")
                     .bodyValue(payload)
                     .retrieve()
