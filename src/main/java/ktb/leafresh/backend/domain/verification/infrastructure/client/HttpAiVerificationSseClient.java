@@ -13,7 +13,7 @@ import reactor.core.publisher.Sinks;
 
 @Slf4j
 @Component
-@Profile("!local")
+@Profile("docker-local") // dev
 public class HttpAiVerificationSseClient implements AiVerificationSseClient {
 
     private final WebClient aiServerWebClient;
