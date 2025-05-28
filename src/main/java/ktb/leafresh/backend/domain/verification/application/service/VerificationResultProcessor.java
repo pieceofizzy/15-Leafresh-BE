@@ -2,6 +2,7 @@ package ktb.leafresh.backend.domain.verification.application.service;
 
 import ktb.leafresh.backend.domain.challenge.group.domain.entity.GroupChallenge;
 import ktb.leafresh.backend.domain.challenge.group.domain.entity.GroupChallengeParticipantRecord;
+import ktb.leafresh.backend.domain.member.application.service.BadgeGrantManager;
 import ktb.leafresh.backend.domain.member.application.service.RewardGrantService;
 import ktb.leafresh.backend.domain.member.domain.entity.Member;
 import ktb.leafresh.backend.domain.notification.application.service.NotificationCreateService;
@@ -30,6 +31,7 @@ public class VerificationResultProcessor {
     private final PersonalChallengeVerificationRepository personalChallengeVerificationRepository;
     private final NotificationCreateService notificationCreateService;
     private final RewardGrantService rewardGrantService;
+    private final BadgeGrantManager badgeGrantManager;
 
     public ChallengeStatus getCurrentStatus(Long memberId, Long challengeId, ChallengeType type) {
         LocalDateTime now = LocalDateTime.now();
@@ -105,6 +107,7 @@ public class VerificationResultProcessor {
             log.info("[Processor 2차 보너스 지급 완료] memberId={}, bonusGranted=true", member.getId());
         }
 
+        badgeGrantManager.evaluateAllAndGrant(member);
         log.info("[Processor 단체 인증 결과 저장 로직 완료] verificationId={}", verificationId);
     }
 
@@ -149,6 +152,7 @@ public class VerificationResultProcessor {
             }
         }
 
+        badgeGrantManager.evaluateAllAndGrant(member);
         log.info("[Processor 개인 인증 결과 저장 및 보상 로직 완료]");
     }
 }
