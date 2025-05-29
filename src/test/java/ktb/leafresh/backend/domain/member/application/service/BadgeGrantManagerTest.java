@@ -32,14 +32,13 @@ class BadgeGrantManagerTest {
         badgeGrantManager = new BadgeGrantManager(List.of(policy1, policy2), memberBadgeRepository);
     }
 
-
     @Test
     @DisplayName("모든 정책에서 나온 새 뱃지들을 저장한다")
     void evaluateAllAndGrant_SaveNewBadgesFromAllPolicies() {
         // Given
         Member member = MemberFixture.of();
-        Badge badge1 = BadgeFixture.of("첫 발자국");
-        Badge badge2 = BadgeFixture.of("지속가능 파이터");
+        Badge badge1 = BadgeFixture.of(1L, "첫 발자국");
+        Badge badge2 = BadgeFixture.of(2L, "지속가능 파이터");
 
         when(policy1.evaluateAndGetNewBadges(member)).thenReturn(List.of(badge1));
         when(policy2.evaluateAndGetNewBadges(member)).thenReturn(List.of(badge2));
@@ -59,13 +58,12 @@ class BadgeGrantManagerTest {
                 .containsExactlyInAnyOrder("첫 발자국", "지속가능 파이터");
     }
 
-
     @Test
     @DisplayName("이미 보유한 뱃지는 저장하지 않는다")
     void evaluateAllAndGrant_SkipAlreadyOwnedBadges() {
         // Given
         Member member = MemberFixture.of();
-        Badge badge = BadgeFixture.of("첫 발자국");
+        Badge badge = BadgeFixture.of(1L, "첫 발자국");
 
         when(policy1.evaluateAndGetNewBadges(member)).thenReturn(List.of(badge));
         when(memberBadgeRepository.existsByMemberAndBadge(member, badge)).thenReturn(true); // 이미 보유

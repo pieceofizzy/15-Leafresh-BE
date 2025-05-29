@@ -5,6 +5,7 @@ import ktb.leafresh.backend.domain.challenge.group.domain.entity.enums.GroupChal
 import ktb.leafresh.backend.domain.challenge.group.infrastructure.repository.GroupChallengeCategoryRepository;
 import ktb.leafresh.backend.domain.member.domain.entity.Badge;
 import ktb.leafresh.backend.domain.member.domain.entity.Member;
+import ktb.leafresh.backend.domain.member.domain.entity.enums.BadgeType;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.BadgeRepository;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.MemberBadgeRepository;
 import ktb.leafresh.backend.domain.verification.infrastructure.repository.GroupChallengeVerificationRepository;
@@ -45,7 +46,7 @@ class SpecialBadgePolicyTest {
     @DisplayName("모든 그룹 챌린지 카테고리에서 1회 이상 인증 성공 시 '지속가능 전도사' 뱃지 지급")
     void evaluateAllGroupCategoriesCleared_ThenGrantSustainabilityBadge() {
         Member member = MemberFixture.of();
-        Badge badge = BadgeFixture.of("지속가능 전도사");
+        Badge badge = BadgeFixture.of(1L, "지속가능 전도사", BadgeType.SPECIAL);
 
         for (GroupChallengeCategoryName categoryEnum : GroupChallengeCategoryName.values()) {
             if (categoryEnum == GroupChallengeCategoryName.ETC) continue;
@@ -65,7 +66,7 @@ class SpecialBadgePolicyTest {
     @DisplayName("모든 개인 챌린지 인증 성공 시 '도전 전부러' 뱃지 지급")
     void evaluateAllPersonalChallengesCleared_ThenGrantPersonalAllClearBadge() {
         Member member = MemberFixture.of();
-        Badge badge = BadgeFixture.of("도전 전부러");
+        Badge badge = BadgeFixture.of(2L, "도전 전부러", BadgeType.SPECIAL);
 
         List<String> titles = List.of(
                 "텀블러 사용하기", "에코백 사용하기", "장바구니 사용하기", "자전거 타기",
@@ -93,7 +94,7 @@ class SpecialBadgePolicyTest {
         Member member = MemberFixture.of();
         GroupChallengeCategoryName categoryEnum = GroupChallengeCategoryName.PLOGGING;
         String badgeName = categoryEnum.getLabel() + " 마스터";
-        Badge badge = BadgeFixture.of(badgeName);
+        Badge badge = BadgeFixture.of(3L, badgeName, BadgeType.SPECIAL);
 
         GroupChallengeCategory category = mock(GroupChallengeCategory.class);
         when(groupChallengeCategoryRepository.findByName(categoryEnum.name())).thenReturn(Optional.of(category));
@@ -110,7 +111,7 @@ class SpecialBadgePolicyTest {
     @DisplayName("30일 연속 인증 성공 시 '에코 슈퍼루키' 뱃지 지급")
     void evaluateConsecutive30Days_ThenGrantEcoBadge() {
         Member member = MemberFixture.of();
-        Badge badge = BadgeFixture.of("에코 슈퍼루키");
+        Badge badge = BadgeFixture.of(4L, "에코 슈퍼루키", BadgeType.SPECIAL);
 
         when(personalRepo.countConsecutiveSuccessDays(member.getId())).thenReturn(30);
         when(badgeRepository.findByName("에코 슈퍼루키")).thenReturn(Optional.of(badge));
