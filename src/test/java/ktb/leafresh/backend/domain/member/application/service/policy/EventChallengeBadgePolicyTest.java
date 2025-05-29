@@ -40,7 +40,7 @@ class EventChallengeBadgePolicyTest {
         Member member = MemberFixture.of();
         String eventTitle = "세계 습지의 날";
         String badgeName = "습지 전도사";
-        Badge badge = BadgeFixture.of(badgeName);
+        Badge badge = BadgeFixture.of(1L, badgeName);
 
         when(groupVerificationRepository.findDistinctEventTitlesWithEventFlagTrue())
                 .thenReturn(List.of(eventTitle));
@@ -66,7 +66,7 @@ class EventChallengeBadgePolicyTest {
         Member member = MemberFixture.of();
         String eventTitle = "세계 습지의 날";
         String badgeName = "습지 전도사";
-        Badge badge = BadgeFixture.of(badgeName);
+        Badge badge = BadgeFixture.of(2L, badgeName);
 
         when(groupVerificationRepository.findDistinctEventTitlesWithEventFlagTrue())
                 .thenReturn(List.of(eventTitle));

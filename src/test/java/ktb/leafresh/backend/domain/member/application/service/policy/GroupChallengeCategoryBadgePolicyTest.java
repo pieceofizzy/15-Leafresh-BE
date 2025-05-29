@@ -4,6 +4,7 @@ import ktb.leafresh.backend.domain.challenge.group.domain.entity.GroupChallengeC
 import ktb.leafresh.backend.domain.challenge.group.infrastructure.repository.GroupChallengeCategoryRepository;
 import ktb.leafresh.backend.domain.member.domain.entity.Badge;
 import ktb.leafresh.backend.domain.member.domain.entity.Member;
+import ktb.leafresh.backend.domain.member.domain.entity.enums.BadgeType;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.BadgeRepository;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.MemberBadgeRepository;
 import ktb.leafresh.backend.domain.verification.infrastructure.repository.GroupChallengeVerificationRepository;
@@ -49,7 +50,7 @@ class GroupChallengeCategoryBadgePolicyTest {
         String categoryName = "제로웨이스트";
         String badgeName = "제로 히어로";
         GroupChallengeCategory categoryEntity = mock(GroupChallengeCategory.class);
-        Badge badge = BadgeFixture.of(badgeName);
+        Badge badge = BadgeFixture.of(1L, badgeName, BadgeType.GROUP);
 
         when(groupChallengeCategoryRepository.findByName(categoryName)).thenReturn(Optional.of(categoryEntity));
         when(groupVerificationRepository.countDistinctChallengesByMemberIdAndCategoryAndStatus(
@@ -69,7 +70,7 @@ class GroupChallengeCategoryBadgePolicyTest {
         String categoryName = "제로웨이스트";
         String badgeName = "제로 히어로";
         GroupChallengeCategory categoryEntity = mock(GroupChallengeCategory.class);
-        Badge badge = BadgeFixture.of(badgeName);
+        Badge badge = BadgeFixture.of(2L, badgeName, BadgeType.GROUP);
 
         when(groupChallengeCategoryRepository.findByName(categoryName)).thenReturn(Optional.of(categoryEntity));
         when(groupVerificationRepository.countDistinctChallengesByMemberIdAndCategoryAndStatus(

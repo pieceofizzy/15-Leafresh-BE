@@ -2,6 +2,7 @@ package ktb.leafresh.backend.domain.member.application.service.policy;
 
 import ktb.leafresh.backend.domain.member.domain.entity.Badge;
 import ktb.leafresh.backend.domain.member.domain.entity.Member;
+import ktb.leafresh.backend.domain.member.domain.entity.enums.BadgeType;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.BadgeRepository;
 import ktb.leafresh.backend.domain.member.infrastructure.repository.MemberBadgeRepository;
 import ktb.leafresh.backend.domain.verification.infrastructure.repository.PersonalChallengeVerificationRepository;
@@ -40,10 +41,10 @@ class PersonalChallengeStreakBadgePolicyTest {
         when(verificationRepository.countConsecutiveSuccessDays(member.getId()))
                 .thenReturn(30);
 
-        Badge badge1 = BadgeFixture.of("새싹 실천러");
-        Badge badge2 = BadgeFixture.of("일주일의 습관");
-        Badge badge3 = BadgeFixture.of("반달 에코러");
-        Badge badge4 = BadgeFixture.of("한 달 챌린지 완주자");
+        Badge badge1 = BadgeFixture.of(1L, "새싹 실천러", BadgeType.PERSONAL);
+        Badge badge2 = BadgeFixture.of(2L, "일주일의 습관", BadgeType.PERSONAL);
+        Badge badge3 = BadgeFixture.of(3L, "반달 에코러", BadgeType.PERSONAL);
+        Badge badge4 = BadgeFixture.of(4L, "한 달 챌린지 완주자", BadgeType.PERSONAL);
 
         when(badgeRepository.findByName("새싹 실천러")).thenReturn(Optional.of(badge1));
         when(badgeRepository.findByName("일주일의 습관")).thenReturn(Optional.of(badge2));
@@ -70,7 +71,7 @@ class PersonalChallengeStreakBadgePolicyTest {
         when(verificationRepository.countConsecutiveSuccessDays(member.getId()))
                 .thenReturn(14);
 
-        Badge badge = BadgeFixture.of("반달 에코러");
+        Badge badge = BadgeFixture.of(5L, "반달 에코러", BadgeType.PERSONAL);
 
         when(badgeRepository.findByName("새싹 실천러")).thenReturn(Optional.empty()); // 못 찾는 경우
         when(badgeRepository.findByName("일주일의 습관")).thenReturn(Optional.empty());
