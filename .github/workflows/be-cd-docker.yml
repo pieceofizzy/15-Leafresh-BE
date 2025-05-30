@@ -3,13 +3,12 @@ name: Backend CD (Docker-based)
 on:
   workflow_dispatch:
     inputs:
-      env:
-        description: '배포 환경 선택'
-        required: true
-        type: choice
-        options:
-          - develop
-          - prod
+      description: '배포 환경 선택'
+      required: true
+      type: choice
+      options:
+        - develop
+        - prod
 
 jobs:
   deploy:
